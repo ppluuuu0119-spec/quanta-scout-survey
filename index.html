@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>廣達藝術小尖兵培訓｜成效與 SROI 評估問卷第四版</title>
+<style>
+:root{--ink:#263342;--muted:#687786;--line:#dce3e9;--paper:#f4f7f9;--blue:#245b78;--blue2:#eaf3f7;--gold:#d7a94b;--white:#fff;--green:#34745e}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans TC",sans-serif;line-height:1.65}
+header{background:linear-gradient(120deg,#173f58,#286c83);color:white;padding:34px 20px 30px}
+.wrap{max-width:980px;margin:auto;padding:0 18px}
+.kicker{font-size:13px;letter-spacing:.12em;opacity:.82}h1{font-size:clamp(24px,4vw,34px);margin:8px 0}header p{margin:6px 0 0;max-width:760px;color:#e7f1f5}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin:18px auto 0}.tab{border:1px solid #cbd8df;background:white;color:var(--blue);border-radius:30px;padding:9px 16px;font-weight:650;cursor:pointer}.tab.active{background:var(--blue);color:white;border-color:var(--blue)}
+main{padding:24px 0 60px}.panel{background:white;border:1px solid var(--line);border-radius:16px;padding:22px;margin:16px 0;box-shadow:0 3px 12px #1b34400a}
+h2{font-size:20px;margin:0 0 5px}h3{font-size:16px;margin:20px 0 8px}.sub{color:var(--muted);font-size:14px;margin:0 0 14px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.field{display:flex;flex-direction:column;gap:5px}.field label,.qtitle{font-weight:650;font-size:14px}.field input,.field select,.field textarea{width:100%;border:1px solid #cbd5dd;border-radius:9px;padding:11px 12px;font:inherit;background:#fff;color:var(--ink)}.field textarea{min-height:78px;resize:vertical}.req{color:#b54b3b}
+.scale{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin:9px 0 3px}.scale label{border:1px solid var(--line);border-radius:9px;padding:8px 4px;text-align:center;font-size:13px;cursor:pointer;background:#fbfcfd}.scale input{display:block;margin:0 auto 4px;accent-color:var(--blue)}.scale label:has(input:checked){background:var(--blue2);border-color:var(--blue);color:var(--blue);font-weight:700}
+.question{padding:14px 0;border-bottom:1px solid #edf0f2}.question:last-child{border:0}.hint{font-size:12px;color:var(--muted);margin-top:4px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.btn{border:0;border-radius:9px;padding:11px 18px;font:inherit;font-weight:700;cursor:pointer}.primary{background:var(--blue);color:white}.secondary{background:#edf2f5;color:var(--blue)}.danger{background:#fff0ed;color:#a23e2e}
+.notice{background:#fff8e8;border-left:4px solid var(--gold);padding:12px 14px;border-radius:8px;font-size:13px;color:#66552f;margin:14px 0}
+.hidden{display:none!important}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stat{background:#f3f7f9;border-radius:12px;padding:16px}.stat strong{display:block;font-size:27px;color:var(--blue)}.stat span{font-size:13px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left}th{background:#f4f7f9}.bar{height:9px;background:#e7edf0;border-radius:20px;overflow:hidden;min-width:90px}.bar i{display:block;height:100%;background:#43839a}
+.small{font-size:12px;color:var(--muted)}.pill{display:inline-block;background:#edf4f6;color:var(--blue);border-radius:20px;padding:3px 9px;font-size:12px;margin:3px}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
+@media(max-width:650px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr}.panel{padding:16px}.scale{gap:4px}.scale label{font-size:11px;padding:7px 1px}}
+@media print{body{background:white}.no-print,nav,header{display:none!important}.panel{box-shadow:none;break-inside:avoid}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<div class="kicker">QUANTA ARTS EDUCATION · OUTCOME & SOCIAL VALUE</div>
+<h1>廣達藝術小尖兵培訓</h1>
+<p>小尖兵培訓成效問卷，了解今天的學習收穫與能力變化。</p>
+</div></header>
+<div class="wrap">
+<nav class="no-print">
+<button class="tab active" data-tab="survey">學生填答</button>
+<button class="tab" data-tab="dashboard">成效分析</button>
+<button class="tab" data-tab="guide">使用與分析說明</button>
+<button class="tab" data-tab="adminLogin">管理者登入</button>
+<button class="tab hidden" id="logoutTab" type="button">管理者登出</button>
+</nav>
+<main>
+<section id="survey">
+<form id="surveyForm">
+<div class="panel">
+<h2>一、活動基本資料</h2><p class="sub">請填寫今天的培訓資料，不需要填寫姓名。</p>
+<div class="grid">
+<div class="field"><label>培訓日期 <span class="req">*</span></label><input type="date" name="date" required></div>
+<div class="field"><label>縣市 <span class="req">*</span></label><select name="county" required><option value="">請選擇</option><option>基隆市</option><option>臺北市</option><option>新北市</option><option>桃園市</option><option>新竹市</option><option>新竹縣</option><option>苗栗縣</option><option>臺中市</option><option>彰化縣</option><option>南投縣</option><option>雲林縣</option><option>嘉義市</option><option>嘉義縣</option><option>臺南市</option><option>高雄市</option><option>屏東縣</option><option>宜蘭縣</option><option>花蓮縣</option><option>臺東縣</option><option>澎湖縣</option><option>金門縣</option><option>連江縣</option></select></div>
+<div class="field"><label>學校名稱 <span class="req">*</span></label><input name="school" required placeholder="請輸入學校名稱"></div>
+<div class="field"><label>就讀年級 <span class="req">*</span></label><select name="grade" required><option value="">請選擇</option><option>國小一年級</option><option>國小二年級</option><option>國小三年級</option><option>國小四年級</option><option>國小五年級</option><option>國小六年級</option><option>國中一年級</option><option>國中二年級</option><option>國中三年級</option><option>高中一年級</option><option>高中二年級</option><option>高中三年級</option><option>其他</option></select></div>
+<div class="field"><label>是否第一次參加小尖兵培訓？</label><select name="first"><option>是，第一次</option><option>不是，曾參加過</option></select></div>
+</div></div>
+<div class="panel">
+<h2>二、今天參加的培訓內容</h2><p class="sub">今天的培訓包含以下五個部分，請勾選你實際參加的內容（可複選）。</p>
+<div class="grid">
+<div class="field">
+<label><input type="checkbox" name="course" value="專業講師授課：廣達巡迴展覽介紹及小尖兵基礎訓練"> 1. 專業講師授課：認識廣達巡迴展覽及小尖兵的任務。</label>
+<label><input type="checkbox" name="course" value="博物館導覽員觀摩"> 2. 博物館導覽員觀摩：觀察博物館導覽員如何介紹作品。</label>
+<label><input type="checkbox" name="course" value="展覽參觀與作品認識"> 3. 展覽參觀：參觀展覽，認識藝術作品。</label>
+</div>
+<div class="field">
+<label><input type="checkbox" name="course" value="博物館參觀禮儀"> 4. 博物館參觀禮儀：認識參觀博物館時應注意的禮貌。</label>
+<label><input type="checkbox" name="course" value="學生導覽自主練習"> 5. 學生導覽自主練習：練習用自己的話介紹作品。</label>
+</div>
+</div>
+<div class="panel">
+<h2>三、參加培訓前後，我的能力有什麼不同？</h2>
+<p class="sub">請先想想「參加今天培訓之前的自己」，再評估「參加今天培訓之後的自己」。每一列都要選兩個分數。</p>
+<div class="notice">分數說明：1＝還不太會；2＝不太會；3＝普通；4＝大致會；5＝很會。請依照自己的真實感受填答，沒有標準答案。</div>
+<div id="questions"></div>
+</div>
+<div class="panel">
+<h2>四、今天的學習收穫</h2>
+<div class="question"><div class="qtitle">1. 今天的培訓，哪一部分對你最有幫助？</div>
+<div class="field"><select name="mostHelpful"><option value="">請選擇</option><option>專業講師授課：廣達巡迴展覽介紹及小尖兵基礎訓練</option><option>博物館導覽員觀摩</option><option>展覽參觀</option><option>博物館參觀禮儀</option><option>學生導覽自主練習</option><option>其他</option></select></div></div>
+<div class="question"><div class="qtitle">2. 今天有沒有哪一件事，是你原本不會、現在比較會了？</div><div class="field"><textarea name="changeExample" placeholder="例如：我比較知道怎麼介紹一幅畫……"></textarea></div></div>
+<div class="question"><div class="qtitle">3. 培訓結束後，你願不願意在學校或展覽現場，試著向其他人介紹一幅畫？</div>
+<div class="scale" data-name="willing"><label><input type="radio" name="willing" value="1" required>1<br>不願意</label><label><input type="radio" name="willing" value="2">2</label><label><input type="radio" name="willing" value="3">3</label><label><input type="radio" name="willing" value="4">4</label><label><input type="radio" name="willing" value="5">5<br>非常願意</label></div></div>
+<div class="question"><div class="qtitle">4. 今天的培訓讓你對藝術、博物館或導覽產生更多興趣嗎？</div>
+<div class="scale"><label><input type="radio" name="interest" value="1" required>1<br>沒有</label><label><input type="radio" name="interest" value="2">2</label><label><input type="radio" name="interest" value="3">3</label><label><input type="radio" name="interest" value="4">4</label><label><input type="radio" name="interest" value="5">5<br>很多</label></div></div>
+</div>
+<div class="panel">
+<h2>五、今天的培訓對我的幫助</h2><p class="sub">請依照自己的感受，選出今天培訓對你的幫助有多大。</p>
+<div class="question"><div class="qtitle">今天的培訓對你的幫助有多大？</div>
+<div class="scale"><label><input type="radio" name="helpfulness" value="1" required>1<br>沒有幫助</label><label><input type="radio" name="helpfulness" value="2">2<br>幫助不大</label><label><input type="radio" name="helpfulness" value="3">3<br>普通</label><label><input type="radio" name="helpfulness" value="4">4<br>有幫助</label><label><input type="radio" name="helpfulness" value="5">5<br>幫助很大</label></div></div>
+</div>
+<div class="actions no-print"><button class="btn primary" type="submit">送出問卷並儲存</button><button class="btn secondary" type="reset">清除本次填答</button></div>
+<p class="small">問卷送出後會傳送至基金會設定的雲端資料庫。請勿填寫姓名或其他可識別個人身分的資訊。若系統尚未完成設定，送出時會顯示提示，不會改存到本機。</p>
+</form>
+</section>
+<section id="adminLogin" class="hidden">
+<div class="panel"><h2>管理者登入</h2><p class="sub">僅限基金會授權帳號。一般填答者不需要登入。</p>
+<form id="loginForm"><div class="grid"><div class="field"><label for="adminEmail">管理者電子郵件</label><input id="adminEmail" type="email" autocomplete="username" required></div><div class="field"><label for="adminPassword">密碼</label><input id="adminPassword" type="password" autocomplete="current-password" required></div></div>
+<div class="actions"><button class="btn primary" type="submit">登入並查看成效</button></div><p id="loginMessage" class="small" role="status"></p></form>
+</div></section>
+<section id="dashboard" class="hidden">
+<div class="panel"><h2>單場培訓成效分析</h2><p class="sub">以下統計雲端資料庫中的問卷。此頁僅供已登入且經授權的基金會管理者使用。</p>
+<div class="stats"><div class="stat"><strong id="n">0</strong><span>有效問卷</span></div><div class="stat"><strong id="gain">—</strong><span>平均能力進步幅度（後測－前測）</span></div><div class="stat"><strong id="ready">—</strong><span>願意嘗試導覽（4或5分）</span></div></div>
+<h3>各項能力前後測比較</h3><div id="outcomeTable"></div>
+<div class="actions no-print"><button class="btn primary" id="csv">匯出問卷資料 CSV</button><button class="btn secondary" id="json">備份原始資料 JSON</button><button class="btn secondary" onclick="window.print()">列印分析</button><button class="btn danger" id="clear">清除本機所有資料</button></div>
+</div>
+<div class="panel"><h2>單場次資料摘要</h2><div id="summary" class="small">目前尚無資料。</div></div>
+<div class="panel"><h2>開放式回饋</h2><div id="comments" class="small">目前尚無資料。</div></div>
+</section>
+<section id="guide" class="hidden">
+<div class="panel"><h2>問卷使用與分析說明</h2>
+<h3>建議施測方式</h3><ol><li>於培訓結束前10分鐘，由老師或工作人員引導學生填答。</li><li>每位學生獨立填寫，不記錄姓名；基本場次欄位可由帶隊老師統一說明。</li><li>請學生依「培訓前」與「培訓後」兩個時間點回想並評分。</li><li>建議每場次保留參與人數、實際出席人數及有效問卷數，以計算問卷回收率。</li></ol>
+<h3>成效指標建議</h3><p>主要指標為八項能力的前後測平均差、後測達4分以上比例，以及願意嘗試導覽和學習興趣的比例。可依縣市、梯次、年級及首次參訓與否比較。</p>
+<div class="notice">目前問卷的前後測屬學生回溯式自評，適合做單場活動的初步成效評估；若要確認學生是否真的能在眾人面前導覽一幅畫，建議另由老師使用簡短觀察表，評估學生是否能完成開場、作品觀察、內容說明及回應提問。</div>
+<h3>SROI 對應與限制</h3><ul><li><b>成果數量：</b>有效填答人數、各項能力後測達4分以上人數、前後測有提升人數。</li><li><b>成果程度：</b>前後測平均分差及學生自評的改變程度。</li><li><b>歸因線索：</b>「今天的培訓對我的幫助有多大」可作為學生主觀感受的輔助資訊，但不能直接當成精確歸因百分比。</li><li><b>成果持續性：</b>本問卷是單次培訓的即時自評，無法直接證明能力會維持多久；如需了解長期改變，建議另做後續追蹤。</li><li><b>財務代理變數：</b>不建議直接將問卷分數乘上課程市價。應先確認成果定義、受益人數、成果期間及財務代理變數的合理性，再計算並調整 deadweight、attribution、drop-off 等因素。</li></ul>
+<h3>與現有 SROI 的銜接</h3><p>現有 Impact Map 的小尖兵培訓成果包含藝術認知、自主學習、學習熱情、口語表達、思考、創意、臨場應變、領導、人際互動及團隊合作。本問卷將其轉化為學生能理解的題目；正式分析時，建議保留與既有 SROI 指標的對照表，避免把單次培訓成果直接擴大解讀為整年度小尖兵服務成果。</p>
+</div>
+</section>
+</main></div>
+<footer>廣達文教基金會｜廣達《游於藝》藝術小尖兵培訓評估問卷（第四版網頁問卷）</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const items=[
+["art","我能說出今天展覽或藝術作品的一些特色。","藝術認知"],
+["explore","看到不懂的作品時，我知道可以用什麼方法找資料或繼續認識它。","自主學習"],
+["thinking","欣賞作品時，我能提出自己的問題或想法。","思考與提問／學習熱情"],
+["speak","我能用自己的話，向別人介紹一幅畫或一件作品。","口語表達／導覽與內容詮釋"],
+["create","我能用自己的觀察或故事，讓導覽內容更有趣。","創意思考及表現"],
+["adapt","如果觀眾提出問題，或現場有突發狀況，我能想辦法回應。","問題分析與臨場應變"],
+["confidence","我有信心站在大家面前說話或進行導覽。","領導力（部分對應）"],
+["team","我能聽取別人的意見，和同學一起完成導覽任務。","團隊合作／溝通互動（部分對應）"]
+];
+const q=document.getElementById('questions');
+items.forEach((it,i)=>{let d=document.createElement('div');d.className='question';d.innerHTML=`<div class="qtitle">${i+1}. ${it[1]}</div><div class="grid"><div><div class="hint">培訓前</div><div class="scale">${[1,2,3,4,5].map(v=>`<label><input required type="radio" name="pre_${it[0]}" value="${v}">${v}</label>`).join('')}</div></div><div><div class="hint">培訓後</div><div class="scale">${[1,2,3,4,5].map(v=>`<label><input required type="radio" name="post_${it[0]}" value="${v}">${v}</label>`).join('')}</div></div></div>`;q.appendChild(d)});
+
+// 上線前請填入 Supabase 專案 URL 與 publishable/anon key。
+// 這兩項可放在前端；請勿放入 service_role key 或資料庫密碼。
+const SUPABASE_URL='https://vvqlhkhjtcyybhrfikar.supabase.co';
+const SUPABASE_ANON_KEY='sb_publishable_MFZ47XdqjHoZmFuiHspxVg_JPXB5cXT';
+let supabaseClient=null, data=[], isAdmin=false, currentUser=null;
+const setupReady = !!(window.supabase && SUPABASE_URL.startsWith('https://') &&
+  SUPABASE_URL !== 'YOUR_SUPABASE_PROJECT_URL' &&
+  SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY');
+if(setupReady) supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+
+const sectionIds=['survey','dashboard','guide','adminLogin'];
+function showTab(id){
+  if(id==='dashboard'&&!isAdmin){id='adminLogin';setLoginMessage('請先使用基金會授權帳號登入。');}
+  document.querySelectorAll('.tab[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
+  sectionIds.forEach(s=>document.getElementById(s).classList.toggle('hidden',s!==id));
+  if(id==='dashboard'&&isAdmin) render();
+}
+document.querySelectorAll('.tab[data-tab]').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
+document.getElementById('logoutTab').addEventListener('click',async()=>{
+  if(supabaseClient) await supabaseClient.auth.signOut();
+  isAdmin=false; currentUser=null; data=[];
+  document.getElementById('logoutTab').classList.add('hidden');
+  document.querySelector('[data-tab="dashboard"]').classList.add('hidden');
+  showTab('survey');
+});
+function setLoginMessage(msg){document.getElementById('loginMessage').textContent=msg||'';}
+function updateAdminUI(){
+  document.getElementById('logoutTab').classList.toggle('hidden',!isAdmin);
+  document.querySelector('[data-tab="dashboard"]').classList.toggle('hidden',!isAdmin);
+}
+async function verifyAdmin(user){
+  if(!supabaseClient||!user)return false;
+  // 權限必須同時由資料庫 RLS 驗證；前端判斷僅控制介面顯示。
+  const {data:profile,error}=await supabaseClient.from('admin_profiles')
+    .select('role').eq('user_id',user.id).maybeSingle();
+  if(error){console.error(error);return false;}
+  return !!profile && profile.role==='admin';
+}
+// 診斷提示：直接以 file:// 開啟時，建議改用本機伺服器或 AI Builder 預覽測試。
+if (location.protocol === 'file:') {
+  setLoginMessage('目前是直接開啟本機 HTML（file://）。若登入失敗，請先透過本機網站伺服器或 AI Builder 預覽測試；此提示不代表帳密一定有誤。');
+}
+document.getElementById('loginForm').addEventListener('submit',async e=>{
+  e.preventDefault(); setLoginMessage('正在連線並驗證帳號…');
+  if(!setupReady||!supabaseClient){setLoginMessage('尚未完成雲端設定：請確認 Supabase URL、公開金鑰及 Supabase JavaScript 程式庫已載入。');return;}
+  const email=document.getElementById('adminEmail').value.trim();
+  const password=document.getElementById('adminPassword').value;
+  try {
+    const {data:authData,error}=await supabaseClient.auth.signInWithPassword({email,password});
+    if(error){
+      console.error('Supabase sign-in error:', error);
+      const msg=(error.message||'未知登入錯誤').replace(/[<>]/g,'');
+      setLoginMessage('Supabase 登入錯誤：'+msg+(error.status?'（HTTP '+error.status+'）':''));
+      return;
+    }
+    const allowed=await verifyAdmin(authData.user);
+    if(!allowed){
+      await supabaseClient.auth.signOut();
+      setLoginMessage('帳號已登入，但未通過管理者權限查核。請確認 admin_profiles.user_id 與 Authentication → Users 的 UID 相同，並檢查資料表權限。');
+      return;
+    }
+    currentUser=authData.user; isAdmin=true; updateAdminUI();
+    setLoginMessage('登入成功。');
+    showTab('dashboard');
+  } catch(err) {
+    console.error('Supabase sign-in exception:', err);
+    const msg=(err && err.message ? err.message : String(err)).replace(/[<>]/g,'');
+    setLoginMessage('連線或瀏覽器錯誤：'+msg+'。請確認網路、Supabase URL／Publishable Key，並嘗試在本機伺服器或 AI Builder 預覽中開啟。');
+  }
+});
+async function loadAdminData(){
+  if(!isAdmin||!supabaseClient)throw new Error('請先以授權管理者登入。');
+  const {data:rows,error}=await supabaseClient.from('survey_responses')
+    .select('id,payload,created_at').order('created_at',{ascending:true});
+  if(error)throw error;
+  data=(rows||[]).map(r=>({...r.payload,_recordId:r.id,_serverCreatedAt:r.created_at}));
+}
+document.getElementById('surveyForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  if(!setupReady||!supabaseClient){
+    alert('問卷系統尚未完成雲端設定，目前無法送出。請聯絡基金會管理者；本版本不會將填答改存到本機。');return;
+  }
+  const form=e.target;
+  if(!form.reportValidity())return;
+  const f=new FormData(form),o={};
+  for(let [k,v] of f.entries()){if(k==='course'){o.course=o.course||[];o.course.push(v)}else{o[k]=v}}
+  o.createdAt=new Date().toISOString();
+  const {error}=await supabaseClient.from('survey_responses').insert({payload:o});
+  if(error){console.error(error);alert('送出失敗，資料尚未確認儲存。請稍後再試或聯絡工作人員。');return;}
+  alert('問卷已成功送出，謝謝你的填答！');
+  form.reset(); window.scrollTo({top:0,behavior:'smooth'});
+});
+function avg(arr){return arr.length?(arr.reduce((a,b)=>a+b,0)/arr.length):0}
+async function render(){
+  if(!isAdmin)return;
+  try{await loadAdminData();}
+  catch(err){console.error(err);alert('目前無法讀取成效資料，請確認登入權限與資料庫設定。');return;}
+  document.getElementById('n').textContent=data.length;
+  let allDiff=[],ready=data.filter(x=>+x.willing>=4).length;
+  items.forEach(it=>data.forEach(x=>{if(x['pre_'+it[0]]&&x['post_'+it[0]])allDiff.push(+x['post_'+it[0]]- +x['pre_'+it[0]])}));
+  document.getElementById('gain').textContent=data.length?(avg(allDiff)>=0?'+':'')+avg(allDiff).toFixed(2):'—';
+  document.getElementById('ready').textContent=data.length?Math.round(ready/data.length*100)+'%':'—';
+  let rows=items.map(it=>{
+    let pre=data.map(x=>+x['pre_'+it[0]]).filter(Boolean),post=data.map(x=>+x['post_'+it[0]]).filter(Boolean);
+    let diff=data.map(x=>x['pre_'+it[0]]&&x['post_'+it[0]]?(+x['post_'+it[0]]-(+x['pre_'+it[0]])):null).filter(v=>v!==null);
+    let positive=post.filter(v=>v>=4).length;
+    return `<tr><td>${it[2]}</td><td>${pre.length?avg(pre).toFixed(2):'—'}</td><td>${post.length?avg(post).toFixed(2):'—'}</td><td>${diff.length?(avg(diff)>0?'+':'')+avg(diff).toFixed(2):'—'}</td><td>${post.length?Math.round(positive/post.length*100)+'%':'—'}</td><td><div class="bar"><i style="width:${post.length?positive/post.length*100:0}%"></i></div></td></tr>`;
+  }).join('');
+  document.getElementById('outcomeTable').innerHTML=`<table><thead><tr><th>成果面向</th><th>前測均分</th><th>後測均分</th><th>平均差</th><th>後測4分以上</th><th></th></tr></thead><tbody>${rows||'<tr><td colspan="6">尚無資料</td></tr>'}</tbody></table><p class="small">註：4分以上比例可作為正向成果的初步觀察，不等同 SROI 最終納入數量。</p>`;
+  let groups={};data.forEach(x=>{let k=[x.date,x.county].filter(Boolean).join('｜')||'未填日期／縣市';groups[k]=(groups[k]||0)+1});
+  let extra=data.length?`<p>平均導覽意願：${avg(data.map(x=>+x.willing).filter(Boolean)).toFixed(2)}／5</p><p>平均藝術／博物館／導覽興趣：${avg(data.map(x=>+x.interest).filter(Boolean)).toFixed(2)}／5</p><p>平均培訓幫助程度：${avg(data.map(x=>+x.helpfulness).filter(Boolean)).toFixed(2)}／5</p>`:'';
+  document.getElementById('summary').innerHTML=data.length?Object.entries(groups).map(([k,v])=>`<span class="pill">${k}：${v}份</span>`).join('')+extra:'目前尚無資料。';
+  let comments=data.map((x,i)=>x.changeExample?`<p><b>${i+1}.</b> ${escapeHtml(x.changeExample)}</p>`:'').filter(Boolean).join('');
+  document.getElementById('comments').innerHTML=comments||'目前尚無文字回饋。';
+}
+function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function download(name,content,type){let a=document.createElement('a'),u=URL.createObjectURL(new Blob([content],{type}));a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)}
+document.getElementById('csv').onclick=()=>{
+  if(!isAdmin)return alert('僅限授權管理者匯出。');
+  if(!data.length)return alert('目前沒有資料');
+  let keys=[...new Set(data.flatMap(x=>Object.keys(x).filter(k=>!k.startsWith('_'))))],esc=v=>'"'+String(Array.isArray(v)?v.join('、'):v??'').replace(/"/g,'""')+'"';
+  download('小尖兵培訓問卷資料.csv','\uFEFF'+[keys.map(esc).join(','),...data.map(x=>keys.map(k=>esc(x[k])).join(','))].join('\n'),'text/csv;charset=utf-8')
+};
+document.getElementById('json').onclick=()=>{if(!isAdmin)return alert('僅限授權管理者備份。');download('小尖兵培訓問卷備份.json',JSON.stringify(data.map(({_recordId,_serverCreatedAt,...x})=>x),null,2),'application/json')};
+document.getElementById('clear').onclick=async()=>{
+  if(!isAdmin||!supabaseClient)return alert('僅限授權管理者執行。');
+  if(!confirm('確定刪除雲端資料庫中的全部問卷資料？此動作無法復原，請先確認已完成備份。'))return;
+  const {error}=await supabaseClient.from('survey_responses').delete().not('id','is',null);
+  if(error){console.error(error);alert('清除失敗，請確認資料庫權限。');return;}
+  await render(); alert('已清除雲端問卷資料。');
+};
+// 不自動顯示管理頁；重新載入後由登入狀態與資料庫角色重新驗證。
+(async()=>{
+  updateAdminUI();
+  if(!setupReady||!supabaseClient)return;
+  const {data:sessionData}=await supabaseClient.auth.getSession();
+  if(sessionData?.session?.user){
+    currentUser=sessionData.session.user;
+    isAdmin=await verifyAdmin(currentUser);
+    if(!isAdmin)await supabaseClient.auth.signOut();
+    updateAdminUI();
+  }
+  supabaseClient.auth.onAuthStateChange(async(_event,session)=>{
+    if(!session){isAdmin=false;currentUser=null;data=[];updateAdminUI();}
+  });
+})();
+</script>
+</body></html>
